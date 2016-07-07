@@ -1,5 +1,5 @@
 import path from 'path'
-import SvgSprite from '../../index'
+import SvgSprite from '../../src'
 
 module.exports = {
   entry: path.join(__dirname, 'entry.js'),

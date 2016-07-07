@@ -1,50 +1,46 @@
-var fs = require('fs')
-var SVGSpriter = require('svg-sprite');
+import fs from 'fs'
+import SVGSpriter from 'svg-sprite'
 
-function SvgSprite(options) {
-  var defaultOptions = {
-    filename: 'svg-sprite.svg'
+const DEFAULT_OPTIONS = {
+  filename: 'svg-sprite.svg'
+}
+
+class SvgSpritePlugin {
+  constructor(options) {
+    this.options = Object.assign({}, DEFAULT_OPTIONS, options)
   }
 
-  this.options = Object.assign({}, defaultOptions, options);
-}
+  apply(compiler) {
+    const { filename } = this.options
 
-SvgSprite.prototype.apply = function(compiler) {
-  var config = this.options;
+    compiler.plugin('emit', (compilation, done) => {
+      const svgs = compilation.fileDependencies.filter(file => file.match(/\.svg$/))
 
-  compiler.plugin('emit', function(compilation, callback) {
-    var svgs = compilation.fileDependencies.filter(function(file) {
-      return file.match(/svg$/);
-    });
+      const spriter = new SVGSpriter({
+        mode: { symbol: true },
+        shape: { transform: [] }
+      })
 
-    var spriter = new SVGSpriter({
-      mode: { symbol: true },
-      shape: { transform: [] }
-    });
+      svgs.forEach(svg => {
+        spriter.add(svg, null, fs.readFileSync(svg, { encoding: 'utf-8' }))
+      })
 
-    svgs.forEach(function(svg) {
-      spriter.add(svg, null, fs.readFileSync(svg, { encoding: 'utf-8' }));
-    });
-
-    spriter.compile(function(err, result) {
-      if(err) {
-        throw err;
-      }
-
-      var contents = result.symbol.sprite.contents.toString('utf-8');
-
-      compilation.assets[config.filename] = {
-        source: function() {
-          return contents;
-        },
-        size: function() {
-          return contents.length;
+      spriter.compile((err, result) => {
+        if (err) {
+          throw err
         }
-      };
-    })
 
-    callback();
-  });
+        const contents = result.symbol.sprite.contents.toString('utf-8')
+
+        compilation.assets[filename] = {
+          source: () => contents,
+          size: () => contents.length
+        }
+
+        done()
+      })
+    })
+  }
 }
 
-export default SvgSprite
+export default SvgSpritePlugin
