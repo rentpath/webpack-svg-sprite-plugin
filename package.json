@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
   "name": "webpack-svg-sprite-plugin",
-  "description": "",
+  "description": "Generates an SVG sprite from imported SVG files",
   "license": "MIT",
   "homepage": "https://github.com/rentpath/webpack-svg-sprite-plugin",
   "repository": {
@@ -33,7 +33,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "chai": "^3.4.1",
     "eslint": "^2.1.0",
-    "eslint-config-rentpath": "^1.1.0",
+    "eslint-config-rentpath": "^2.0.0",
     "file-loader": "^0.9.0",
     "istanbul": "^1.0.0-alpha",
     "jsdom": "8.0.2",
