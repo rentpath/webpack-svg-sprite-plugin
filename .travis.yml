@@ -1,0 +1,20 @@
+sudo: false
+language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
+node_js:
+  - '4.2'
+before_install:
+  - npm i -g npm@^2.0.0
+before_script:
+  - npm prune
+  - npm run compile
+  - npm run test
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && npm run semantic-release
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
