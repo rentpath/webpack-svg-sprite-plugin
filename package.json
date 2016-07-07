@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
   "name": "webpack-svg-sprite-plugin",
-  "description": "",
+  "description": "Generates an SVG sprite from imported SVG files",
   "license": "MIT",
   "homepage": "https://github.com/rentpath/webpack-svg-sprite-plugin",
   "repository": {
