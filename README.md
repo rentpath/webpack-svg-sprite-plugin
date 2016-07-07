@@ -1,4 +1,6 @@
 # webpack-svg-sprite-plugin
+Webpack plugin that finds all SVG assets in the build and generates a svg sprite with `<symbol>` elements.
+
 
 
 ## Installation
@@ -8,8 +10,23 @@ $ npm i --save webpack-svg-sprite-plugin
 
 ## Usage
 ```javascript
+  var SvgSpritePlugin = require('webpack-svg-sprite-plugin')
 
+  module.exports = {
+    // ...
+    plugins: [
+      new SvgSpritePlugin({ filename: 'my-sprite.svg' })
+    ]
+  }
 ```
+
+### Configuration
+```javascript
+{
+  filename: 'sprite-name.svg' // Filename the sprite will be added with. Default: 'svg-sprite.svg'
+}
+```
+
 
 ## Scripts
 * `npm run compile` - Compiles the module to disk (~/lib).
