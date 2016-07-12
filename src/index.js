@@ -18,7 +18,8 @@ class SvgSpritePlugin {
 
       const spriter = new SVGSpriter({
         mode: { symbol: true },
-        shape: { transform: [] }
+        shape: { transform: [] },
+        svg: { namespaceIDs: false }
       })
 
       svgs.forEach(svg => {
