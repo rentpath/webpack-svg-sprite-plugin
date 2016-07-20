@@ -1,5 +1,4 @@
 {
-  "version": "0.0.0-semantically-released",
   "name": "webpack-svg-sprite-plugin",
   "description": "Generates an SVG sprite from imported SVG files",
   "license": "MIT",
@@ -41,7 +40,8 @@
     "jsdom-global": "1.6.1",
     "mocha": "^2.3.4",
     "sinon": "^1.17.3",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "semantic-release": "^4.3.5"
   },
   "engines": {
     "node": ">=4.2.1",
@@ -52,9 +52,10 @@
     "semantic-release": "^4.3.5",
     "svg-sprite": "^1.3.3"
   },
- "config": {
-   "commitizen": {
+  "config": {
+    "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   }
 }
+
