@@ -1,16 +1,23 @@
 import path from 'path'
 import SvgSprite from '../../src'
+import CompressionPlugin from 'compression-webpack-plugin'
 
 module.exports = {
   entry: path.join(__dirname, 'entry.js'),
 
   module: {
     loaders: [
-      { test: /\.svg$/, loader: 'file-loader?emitFile=false' }
+      {
+        test: /\.svg$/,
+        loaders: [
+          'file'
+        ]
+      }
     ]
   },
 
   plugins: [
+    new CompressionPlugin(),
     new SvgSprite()
   ],
 
