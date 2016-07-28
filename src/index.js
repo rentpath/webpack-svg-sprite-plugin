@@ -1,8 +1,7 @@
-import fs from 'fs'
 import SVGSpriter from 'svg-sprite'
 
 const DEFAULT_OPTIONS = {
-  filename: 'svg-sprite.svg'
+  filename: 'svg-sprite.svg',
 }
 
 class SvgSpritePlugin {
@@ -13,34 +12,42 @@ class SvgSpritePlugin {
   apply(compiler) {
     const { filename } = this.options
 
-    compiler.plugin('emit', (compilation, done) => {
-      const svgs = compilation.fileDependencies.filter(file => file.match(/\.svg$/))
+    /* eslint-disable  no-param-reassign */
+    compiler.plugin('this-compilation', compilation => {
+      compilation.plugin('optimize-assets', (assets, done) => {
+        const spriter = new SVGSpriter({
+          mode: { symbol: true },
+          shape: { transform: [] },
+          svg: { namespaceIDs: false },
+        })
 
-      const spriter = new SVGSpriter({
-        mode: { symbol: true },
-        shape: { transform: [] },
-        svg: { namespaceIDs: false }
-      })
+        compilation.modules.forEach(module => {
+          if (module.resource && module.resource.match(/\.svg$/)) {
+            const hashName = Object.keys(module.assets)[0]
+            const contents = module.assets[hashName].source()
+            spriter.add(module.resource, null, contents)
 
-      svgs.forEach(svg => {
-        spriter.add(svg, null, fs.readFileSync(svg, { encoding: 'utf-8' }))
-      })
+            delete assets[hashName]
+          }
+        })
 
-      spriter.compile((err, result) => {
-        if (err) {
-          throw err
-        }
+        spriter.compile((err, result) => {
+          if (err) {
+            throw err
+          }
 
-        const contents = result.symbol.sprite.contents.toString('utf-8')
+          const contents = result.symbol.sprite.contents.toString('utf-8')
 
-        compilation.assets[filename] = {
-          source: () => contents,
-          size: () => contents.length
-        }
+          assets[filename] = {
+            source: () => contents,
+            size: () => contents.length,
+          }
+        })
 
         done()
       })
     })
+    /* eslint-enable  no-param-reassign */
   }
 }
 
