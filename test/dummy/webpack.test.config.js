@@ -10,19 +10,19 @@ module.exports = {
       {
         test: /\.svg$/,
         loaders: [
-          'file'
-        ]
-      }
-    ]
+          'file',
+        ],
+      },
+    ],
   },
 
   plugins: [
     new CompressionPlugin(),
-    new SvgSprite()
+    new SvgSprite({ filename: 'test-[hash].svg' }),
   ],
 
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js'
-  }
-};
+    filename: 'bundle.js',
+  },
+}

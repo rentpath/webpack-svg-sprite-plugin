@@ -25,7 +25,8 @@ $ npm i --save webpack-svg-sprite-plugin
 ### Configuration
 ```javascript
 {
-  filename: 'sprite-name.svg' // Filename the sprite will be added with. Default: 'svg-sprite.svg'
+  filename: 'sprite-[hash].svg'
+  // Default: 'sprite-svg.svg', [hash] Placeholder is supported.
 }
 ```
 
@@ -51,4 +52,3 @@ $ npm i --save webpack-svg-sprite-plugin
  ```
 
  `$ git cz` will bring up the Commitizen commit prompt, follow the instructions, and `$ git push` as usual.
-

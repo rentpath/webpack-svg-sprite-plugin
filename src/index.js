@@ -1,8 +1,10 @@
 import SVGSpriter from 'svg-sprite'
 
 const DEFAULT_OPTIONS = {
-  filename: 'svg-sprite.svg',
+  filename: 'sprite-svg.svg',
 }
+
+const hashPlaceholder = '[hash]'
 
 class SvgSpritePlugin {
   constructor(options) {
@@ -16,7 +18,12 @@ class SvgSpritePlugin {
     compiler.plugin('this-compilation', compilation => {
       compilation.plugin('optimize-assets', (assets, done) => {
         const spriter = new SVGSpriter({
-          mode: { symbol: true },
+          mode: {
+            symbol: {
+              bust: filename.indexOf(hashPlaceholder) > -1,
+              sprite: 'sprite',
+            },
+          },
           shape: { transform: [] },
           svg: { namespaceIDs: false },
         })
@@ -35,10 +42,11 @@ class SvgSpritePlugin {
           if (err) {
             throw err
           }
+          const resultSprite = result.symbol.sprite
+          const contents = resultSprite.contents.toString('utf-8')
+          const hash = resultSprite.stem.split('-')[1]
 
-          const contents = result.symbol.sprite.contents.toString('utf-8')
-
-          assets[filename] = {
+          assets[filename.replace(hashPlaceholder, hash)] = {
             source: () => contents,
             size: () => contents.length,
           }
